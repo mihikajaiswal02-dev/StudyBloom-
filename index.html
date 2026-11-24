@@ -47,6 +47,6 @@ function openTask(i=null){let t=i==null?{name:"",days:0}:state.tasks[i];openModa
 function openScore(i=null){let s=i==null?{subject:state.subjects[0]?.name||"",name:"",score:0,max:100}:state.scores[i];openModal(i==null?"📊 Log test score":"✏️ Correct test score",`<select id=fSubject>${state.subjects.map(x=>`<option>${esc(x.name)}</option>`).join("")}</select><input id=fName value="${esc(s.name)}" placeholder="Test name"><div class=row><input id=fScore type=number min=0 value=${s.score} placeholder="Score"><input id=fMax type=number min=1 value=${s.max} placeholder="Maximum"></div><button onclick="saveScore(${i==null?"null":i})">Save score</button>`);fSubject.value=s.subject}function saveScore(i){let score=+fScore.value,max=+fMax.value;if(!max||score<0||score>max)return alert("Please enter a valid score.");let s={subject:fSubject.value,name:fName.value.trim()||"Test",score,max};i==null?state.scores.push(s):state.scores[i]=s;save();closeModal();render()}function editScore(i){openScore(i)}function removeScore(i){if(confirm("Delete this score?")){state.scores.splice(i,1);save();render()}}
 render();updateTimer();if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
 </script>
-  <script src="StudyBloom_modal_fix_v2.js"></script>
+<script src="StudyBloom_modal_fix_v2.js"></script>
 </body>
 </html>
