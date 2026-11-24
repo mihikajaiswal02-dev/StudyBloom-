@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#274632">
+<meta name="description" content="StudyBloom — grow your knowledge, watch it bloom.">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>StudyBloom 🌱</title>
+<style>
+:root{--ink:#294132;--deep:#274632;--moss:#527452;--sage:#a8bf9d;--cream:#f7f0df;--paper:#fffaf0;--gold:#e8b75d;--coral:#d97868;--shadow:0 8px 24px rgba(42,65,50,.12)}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:radial-gradient(circle at top,#e7f0d9,var(--cream) 45%,#e9dfc8);min-height:100vh}
+.app{max-width:1100px;margin:auto;padding:22px 16px 95px}.hero{background:linear-gradient(135deg,#31573d,#1f392c);color:#fff;border-radius:30px;padding:26px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"✦ ･ ✧ ･ ✦";position:absolute;right:24px;top:18px;color:#f5d78d;font-size:22px}.hero h1{margin:0;font-size:2.2rem}.hero p{opacity:.88;margin-bottom:0}.quote{margin-top:16px;background:#ffffff17;border:1px solid #ffffff25;border-radius:18px;padding:12px 15px;font-style:italic}
+.grid{display:grid;grid-template-columns:1.4fr .9fr;gap:18px;margin-top:18px}.card{background:rgba(255,250,240,.9);border:1px solid #dfd5bd;border-radius:24px;padding:19px;box-shadow:var(--shadow)}h2,h3{margin-top:0}.priority{background:linear-gradient(135deg,#fff0dc,#f6d5b7);border-radius:18px;padding:16px}.bar{height:10px;background:#dce3d3;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#769c62,#d0b95c);border-radius:999px}.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.subject{padding:14px;border-radius:18px;background:#edf2e6;border:1px solid #d7e2cf}.subject b{display:block;margin-bottom:7px}
+.deadline{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px dashed #d8ceb8}.badge{padding:5px 9px;border-radius:999px;font-size:.8rem;font-weight:700}.urgent{background:#f5d2cb;color:#8c4034}.soon{background:#f7e3ad;color:#805c10}.safe{background:#d9ead1;color:#3d693c}
+.garden{min-height:270px;background:linear-gradient(#b8d8c1 0 52%,#86ad69 52%);border-radius:24px;position:relative;overflow:hidden;padding:18px}.garden:before{content:"☾";position:absolute;right:24px;top:8px;font-size:44px;color:#fff8d4;opacity:.8}.trees{position:absolute;bottom:18px;left:18px;right:18px;font-size:clamp(2rem,6vw,4.8rem);word-spacing:7px;line-height:1.25}.fireflies{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,#fff3a7 0 2px,transparent 3px);background-size:80px 70px;opacity:.65}
+.timer{text-align:center}.time{font-size:3.2rem;font-weight:800;letter-spacing:2px;margin:15px 0}.controls{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}button{border:0;border-radius:14px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--deep);color:white;box-shadow:0 4px 0 #173021}button:hover{transform:translateY(-1px)}button.secondary{background:#e7dcc5;color:var(--ink);box-shadow:0 4px 0 #cfc1a8}select{padding:10px;border-radius:12px;border:1px solid #cfc3ab;background:#fffaf0;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#eef3e8;border-radius:16px;padding:12px}.stat strong{font-size:1.35rem;display:block}.addrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.addrow input{flex:1;min-width:120px;padding:10px;border-radius:12px;border:1px solid #cfc3ab;background:#fffdf7}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,250,240,.95);backdrop-filter:blur(10px);border-top:1px solid #ded3bd;display:flex;justify-content:center;gap:5px;padding:10px;z-index:4}.nav button{background:transparent;color:var(--ink);box-shadow:none;font-size:.82rem;padding:8px 13px}.nav button.active{background:#dfead8}.page{display:none}.page.active{display:block}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#294132;color:white;padding:12px 18px;border-radius:999px;opacity:0;transition:.3s;z-index:8}.toast.show{opacity:1}
+@media(max-width:750px){.grid{grid-template-columns:1fr}.app{padding:14px 12px 90px}.hero{border-radius:24px}.hero h1{font-size:1.8rem}.garden{min-height:220px}}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div class="app">
+<section id="home" class="page active">
+<div class="hero">
+<h1 id="greeting">Welcome back, Scholar 🌿</h1>
+<p id="subgreeting">Your little corner of the forest is waiting.</p>
+<div class="quote" id="quote"></div><button id="installBtn" style="margin-top:12px;display:none;background:#e8b75d;color:#294132;box-shadow:none">📱 Install StudyBloom</button>
+</div>
+<div class="grid">
+<div class="card">
+<h2>🍄 Today's quest</h2>
+<div class="priority"><b>🧬 Biology revision</b><p>One small chapter is still a victory. The syllabus is large, but so is your audacity.</p><div class="bar"><div class="fill" style="width:60%"></div></div><small>60% prepared</small></div>
+<h3 style="margin-top:20px">📚 Your subjects</h3>
+<div class="subjects" id="subjects"></div>
+</div>
+<div class="card">
+<h2>⏳ Deadlines creeping closer</h2>
+<div id="deadlines"></div>
+<div class="addrow"><input id="taskInput" placeholder="Add a deadline/task"><input id="daysInput" type="number" min="0" placeholder="Days"><button onclick="addDeadline()">Add</button></div>
+</div>
+</div>
+<div class="grid">
+<div class="card"><h2>🌳 Your enchanted garden</h2><div class="garden"><div class="fireflies"></div><div class="trees" id="trees">🌱 🌿 🍄</div></div><p id="gardenText">Every focus session leaves something behind.</p></div>
+<div class="card"><h2>✨ Forest statistics</h2><div class="stats"><div class="stat"><strong id="mins">0</strong>minutes grown</div><div class="stat"><strong id="sessions">0</strong>focus sessions</div><div class="stat"><strong id="plants">3</strong>plants & friends</div><div class="stat"><strong id="score">—</strong>latest score</div></div></div>
+</div>
+</section>
+
+<section id="focus" class="page">
+<div class="card timer">
+<h2>🌱 Focus Grove</h2>
+<p>Pick a subject, plant your attention, and let the timer do its little magic.</p>
+<select id="timerSubject"></select>
+<div class="time" id="time">25:00</div>
+<div class="bar"><div class="fill" id="timerBar" style="width:100%"></div></div>
+<p id="timerStatus">A tiny sprout is waiting for you.</p>
+<div class="controls"><button onclick="startTimer()">Begin focus ✨</button><button class="secondary" onclick="pauseTimer()">Pause</button><button class="secondary" onclick="resetTimer()">Reset</button></div>
+</div>
+</section>
+
+<section id="progress" class="page">
+<div class="card"><h2>📜 Explorer's Journal</h2><p>Progress doesn't have to be perfect to count. Thank goodness, honestly.</p>
+<div class="stats" id="progressStats"></div>
+<h3 style="margin-top:20px">🎯 Subject progress</h3><div id="progressSubjects"></div></div>
+<div class="card" style="margin-top:18px"><h2>📝 Log a test</h2><div class="addrow"><select id="testSubject"></select><input id="testScore" type="number" placeholder="Score"><input id="testOutOf" type="number" placeholder="Out of"><button onclick="logTest()">Log test</button></div><p id="testMessage"></p></div>
+</section>
+
+<section id="sprout" class="page">
+<div class="card"><h2>🌱 Sprout's Campfire</h2><p><b>Sprout:</b> Hello! I am approximately 14% plant and 86% academic moral support.</p>
+<div class="priority" id="sproutMessage">Ask me for motivation, planning, or a reality check. (The fancy AI brain is the next upgrade!)</div>
+<div class="controls" style="margin-top:16px"><button onclick="sproutTalk('motivate')">Motivate me</button><button class="secondary" onclick="sproutTalk('plan')">Help me plan</button><button class="secondary" onclick="sproutTalk('chaos')">Give me chaos</button></div></div>
+</section>
+</div>
+
+<nav class="nav">
+<button class="active" onclick="showPage('home',this)">🏡 Home</button>
+<button onclick="showPage('focus',this)">⏱ Focus</button>
+<button onclick="showPage('progress',this)">📊 Journal</button>
+<button onclick="showPage('sprout',this)">🌱 Sprout</button>
+</nav>
+
+<script>
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  const button = document.getElementById("installBtn");
+  if (button) button.style.display = "inline-block";
+});
+document.addEventListener("click", async event => {
+  if (event.target.id === "installBtn" && deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    event.target.style.display = "none";
+  }
+});
+const quotes=["You don't have to conquer the whole syllabus today. One goblin at a time.","Future You has sent a message: 'please do the thing.'","The mitochondria may be the powerhouse of the cell, but deadlines are the powerhouse of anxiety.","Tiny progress is still progress. Even moss takes its time.","Study now, panic less later. Revolutionary technology.","Your brain has entered the forest. Please do not scare it away."];
+let state=JSON.parse(localStorage.getItem('studyBloom')||'null')||{
+subjects:[
+{name:'Mathematics',icon:'📐',progress:72},
+{name:'Biology',icon:'🧬',progress:55},
+{name:'Physics',icon:'⚡',progress:40},
+{name:'Chemistry',icon:'⚗️',progress:48},
+{name:'Social Science',icon:'🌍',progress:52},
+{name:'English',icon:'📖',progress:68},
+{name:'Gujarati',icon:'🦚',progress:45},
+{name:'Hindi',icon:'📝',progress:50},
+{name:'Computer',icon:'💻',progress:60}
+],
+deadlines:[{task:'Biology test',days:2},{task:'Maths assignment',days:4},{task:'English project',days:8}],
+minutes:0,sessions:0,plants:3,latestScore:'—'};
+function save(){localStorage.setItem('studyBloom',JSON.stringify(state))}
+function render(){
+document.getElementById('quote').textContent='“'+quotes[Math.floor(Math.random()*quotes.length)]+'”';
+const hour=new Date().getHours();document.getElementById('greeting').textContent=(hour<12?'Good morning':hour<18?'Good afternoon':'Good evening')+', Scholar 🌿';
+document.getElementById('subjects').innerHTML=state.subjects.map(s=>`<div class="subject"><b>${s.icon} ${s.name}</b><div class="bar"><div class="fill" style="width:${s.progress}%"></div></div><small>${s.progress}% explored</small></div>`).join('');
+document.getElementById('deadlines').innerHTML=state.deadlines.sort((a,b)=>a.days-b.days).map(d=>{let c=d.days<=1?'urgent':d.days<=4?'soon':'safe';return `<div class="deadline"><span>${d.task}</span><span class="badge ${c}">${d.days} day${d.days===1?'':'s'}</span></div>`}).join('');
+['timerSubject','testSubject'].forEach(id=>document.getElementById(id).innerHTML=state.subjects.map(s=>`<option>${s.icon} ${s.name}</option>`).join(''));
+document.getElementById('mins').textContent=state.minutes;document.getElementById('sessions').textContent=state.sessions;document.getElementById('plants').textContent=state.plants;document.getElementById('score').textContent=state.latestScore;
+let extras=Math.max(0,state.plants-3);let emoji=extras?Array.from({length:Math.min(extras,24)},(_,i)=>['🌱','🌿','🌳','🌲','🌻','🍄'][i%6]).join(' '):'';document.getElementById('trees').textContent='🌱 🌿 🍄 '+emoji;
+document.getElementById('gardenText').textContent=state.minutes?`Your forest has grown through ${state.minutes} minutes of focus. Tiny legend behaviour. ✨`:'Every focus session leaves something behind.';
+document.getElementById('progressStats').innerHTML=`<div class="stat"><strong>${state.minutes}</strong>total focus minutes</div><div class="stat"><strong>${state.sessions}</strong>sessions completed</div><div class="stat"><strong>${state.deadlines.length}</strong>quests tracked</div><div class="stat"><strong>${state.latestScore}</strong>latest test score</div>`;
+document.getElementById('progressSubjects').innerHTML=state.subjects.map(s=>`<p><b>${s.icon} ${s.name}</b> — ${s.progress}%<div class="bar"><div class="fill" style="width:${s.progress}%"></div></div></p>`).join('');
+}
+function addDeadline(){let t=taskInput.value.trim(),d=+daysInput.value;if(t&&Number.isFinite(d)){state.deadlines.push({task:t,days:d});taskInput.value='';daysInput.value='';save();render();toast('New quest added 🌿')}}
+function logTest(){let a=+testScore.value,b=+testOutOf.value;if(a>=0&&b>0){let p=(a/b*100).toFixed(1);state.latestScore=`${a}/${b}`;testMessage.textContent=`✨ Logged! That's ${p}%. Sprout has put on a tiny ceremonial leaf hat.`;save();render()}}
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2800)}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+let total=1500,remaining=total,interval=null;
+function updateTimer(){let m=Math.floor(remaining/60),s=remaining%60;time.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;timerBar.style.width=(remaining/total*100)+'%'}
+function startTimer(){if(interval)return;timerStatus.textContent='Focus mode active. The forest is very quiet. Suspiciously quiet.';interval=setInterval(()=>{remaining--;updateTimer();if(remaining<=0){clearInterval(interval);interval=null;completeSession()}},1000)}
+function pauseTimer(){clearInterval(interval);interval=null;timerStatus.textContent='Paused. Even enchanted forests take breaks.'}
+function resetTimer(){pauseTimer();remaining=total;updateTimer()}
+function completeSession(){state.minutes+=Math.round(total/60);state.sessions++;state.plants+=1;let sub=document.getElementById('timerSubject').value.replace(/^[^\s]+\s/,'');let s=state.subjects.find(x=>x.name===sub);if(s)s.progress=Math.min(100,s.progress+3);save();render();toast('🌳 Focus complete! A new plant has joined the forest.');timerStatus.textContent='Quest complete! You did the thing ✨';remaining=total;updateTimer()}
+function sproutTalk(type){let msg={motivate:"You do not need to feel ready. Start messy. Start sleepy. Start with one page. The forest grows one leaf at a time. 🌱",plan:"Okay, tiny strategy: pick the nearest deadline, do the hardest 20–25 minute chunk first, then reassess. No dramatic 47-step timetable required.",chaos:"ATTENTION SCHOLAR. THE DEADLINE CREATURE APPROACHES. EQUIP TEXTBOOK. CAST FOCUS SPELL. DEAL 25 MINUTES OF DAMAGE. ⚔️📚"};sproutMessage.textContent=msg[type]}
+render();updateTimer();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+</script>
+</body></html>
